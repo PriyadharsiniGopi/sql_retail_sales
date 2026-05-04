@@ -23,22 +23,23 @@ This project is designed to demonstrate SQL skills and techniques typically used
 - **Table Creation**: A table named `retail_sales` is created to store the sales data. The table structure includes columns for transaction ID, sale date, sale time, customer ID, gender, age, product category, quantity sold, price per unit, cost of goods sold (COGS), and total sale amount.
 
 ```sql
-CREATE DATABASE p1_retail_db;
+create database sql_project_1;
+use sql_project_1;
 
-CREATE TABLE retail_sales
+create table retail_sales 
 (
-    transactions_id INT PRIMARY KEY,
-    sale_date DATE,	
-    sale_time TIME,
-    customer_id INT,	
-    gender VARCHAR(10),
-    age INT,
-    category VARCHAR(35),
-    quantity INT,
-    price_per_unit FLOAT,	
-    cogs FLOAT,
-    total_sale FLOAT
-);
+ transactions_id int primary key,
+ sale_date	date ,
+ sale_time	time ,
+ customer_id int ,	
+ gender	varchar(15),
+ age int null ,
+ category varchar(20),
+ quantiy int null ,
+ price_per_unit	 float null ,
+ cogs float null ,
+ total_sale float null
+ ); 
 ```
 
 ### 2. Data Exploration & Cleaning
@@ -89,6 +90,10 @@ WHERE
     AND
     quantity >= 4
 ```
+  or 
+```sql
+select * from retail_sales where category = 'clothing' and quantiy>= 4 and sale_date between '2022-11-01' and '2022-11-30';
+```
 
 3. **Write a SQL query to calculate the total sales (total_sale) for each category.**:
 ```sql
@@ -97,7 +102,7 @@ SELECT
     SUM(total_sale) as net_sale,
     COUNT(*) as total_orders
 FROM retail_sales
-GROUP BY 1
+GROUP BY category 
 ```
 
 4. **Write a SQL query to find the average age of customers who purchased items from the 'Beauty' category.**:
@@ -186,6 +191,22 @@ SELECT
 FROM hourly_sale
 GROUP BY shift
 ```
+or 
+```sql
+select count(*),shift from
+(select * , case
+when extract(hour from sale_time) < 12 
+then 'Morning'
+when extract(hour from sale_time) between 12 and 17 
+then 'afternoon'
+else 
+'evening' 
+end as 'shift'
+ from retail_sales)
+ as t1
+ group by shift;
+ ```
+
 
 ## Findings
 
